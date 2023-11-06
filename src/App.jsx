@@ -20,6 +20,12 @@ function App() {
   useEffect(() => {
     fetchData();
   }, []);
+  const meals = data.categories.meals.map((meal) => (
+    <div key={meal.id}>
+      <p>{meal.title}</p>
+      <p>{meal.description}</p>
+    </div>
+  ));
 
   return isLoading ? (
     <span>En cours de chargement...</span>
@@ -30,22 +36,10 @@ function App() {
       <img src={data.restaurant.picture} alt="restaurant" />
 
       {data.categories.map((item) => {
-        console.log(item);
-        return (
-          <>
-            <h2 key={item.name}>{item.name}</h2>
-            <span key={item.meals.id}>{item.meals}</span>
-          </>
-
-          // <h2 key={item.meals}>{item.meals}</h2>
-        );
+        // console.log(item);
+        return <h2 key={item.name}>{item.name}</h2>;
       })}
-
-      <section>
-        <h2>{data.categories[0].name}</h2>
-        <h2>{data.categories[1].name}</h2>
-        {/* <p keys={data.categories[0].id}>{data.categories[0].meals}</p> */}
-      </section>
+      <div>{meals}</div>
     </>
   );
 }
