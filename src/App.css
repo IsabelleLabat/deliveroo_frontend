@@ -135,3 +135,7 @@ h2 {
 .items-basket p {
   margin-bottom: 10px;
 }
+
+.subtotal {
+  display: flex;
+}

@@ -9,6 +9,7 @@ function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [basket, setBasket] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,13 +89,15 @@ function App() {
           <aside className="panier">
             <div className="basket">
               {basket.map((item) => {
+                setSubtotal(subtotal + item.price);
                 return (
-                  <div className="items-basket" key={item.title}>
+                  <div key={item.title} className="items-basket">
                     <p>{item.title}</p>
                     <p>{item.price} €</p>
                   </div>
                 );
               })}
+              <div>Sous total {subtotal}</div>
             </div>
           </aside>
         </div>
