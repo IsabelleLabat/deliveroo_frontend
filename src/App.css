@@ -117,3 +117,21 @@ h2 {
   margin-right: 10px;
   color: #868a8a;
 }
+/* Basket */
+.basket {
+  background-color: #ffffff;
+  border-radius: 5px;
+  width: 350px;
+  height: 100px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.items-basket {
+  display: flex;
+  justify-content: space-between;
+}
+
+.items-basket p {
+  margin-bottom: 10px;
+}

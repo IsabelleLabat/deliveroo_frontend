@@ -8,6 +8,7 @@ import axios from "axios";
 function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [basket, setBasket] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +52,18 @@ function App() {
                     <h2>{item.name}</h2>
                     <div className="meal-container">
                       {item.meals.map((meal) => {
+                        //console.log(meal);
                         return (
-                          <div className="plate" key={meal.name}>
+                          <div
+                            className="plate"
+                            key={meal.id}
+                            onClick={() => {
+                              const basketCopy = [...basket];
+                              basketCopy.push(meal);
+                              console.log(meal);
+                              setBasket(basketCopy);
+                            }}
+                          >
                             <div>
                               <h3>{meal.title}</h3>
                               <p className="description">{meal.description}</p>
@@ -74,7 +85,18 @@ function App() {
               }
             })}
           </div>
-          <aside className="panier"></aside>
+          <aside className="panier">
+            <div className="basket">
+              {basket.map((item) => {
+                return (
+                  <div className="items-basket" key={item.title}>
+                    <p>{item.title}</p>
+                    <p>{item.price} €</p>
+                  </div>
+                );
+              })}
+            </div>
+          </aside>
         </div>
       </main>
     </div>
