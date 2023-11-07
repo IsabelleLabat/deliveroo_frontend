@@ -9,7 +9,18 @@ function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [basket, setBasket] = useState([]);
-  const [subtotal, setSubtotal] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [AddedToCart, SetAddedToCart] = useState(false);
+
+  const handleIncrement = () => {
+    setQuantity((prevCount) => prevCount + 1);
+  };
+  const handleDecrement = () => {
+    setQuantity((prevCount) => prevCount - 1);
+  };
+  let subTotal = 0;
+  let delivery = 0;
+  let Total = 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +31,7 @@ function App() {
       setData(response.data);
       setIsLoading(false);
     };
+
     fetchData();
   }, []);
 
@@ -63,6 +75,7 @@ function App() {
                               basketCopy.push(meal);
                               console.log(meal);
                               setBasket(basketCopy);
+                              SetAddedToCart(true);
                             }}
                           >
                             <div>
@@ -86,19 +99,74 @@ function App() {
               }
             })}
           </div>
-          <aside className="panier">
-            <div className="basket">
-              {basket.map((item) => {
-                setSubtotal(subtotal + item.price);
-                return (
-                  <div key={item.title} className="items-basket">
-                    <p>{item.title}</p>
-                    <p>{item.price} €</p>
-                  </div>
-                );
-              })}
-              <div>Sous total {subtotal}</div>
-            </div>
+
+          <aside>
+            {AddedToCart === true ? (
+              <section>
+                <input
+                  className="submit "
+                  type="submit"
+                  value="Valider mon panier"
+                  onClick={() => alert("Merci pour votre commande")}
+                />
+                <div className="cart">
+                  {basket.map((item) => {
+                    subTotal = subTotal + parseInt(item.price);
+                    delivery = 2.5;
+                    Total = subTotal + delivery;
+
+                    return (
+                      <div key={item.title} className="items-basket">
+                        <div className="quantity">
+                          <button
+                            className="quantitybutton"
+                            onClick={handleDecrement}
+                          >
+                            -
+                          </button>
+
+                          <div>{quantity}</div>
+                          <button
+                            className="quantitybutton"
+                            onClick={handleIncrement}
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <p>{item.title}</p>
+                        <p>{item.price} €</p>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="subtotal">
+                  <p>Sous total</p>
+                  <p>{subTotal} €</p>
+                </div>
+
+                <div className="delivery">
+                  <p>Livraison</p>
+                  <p>{delivery} €</p>
+                </div>
+
+                <div className="subtotal">
+                  <p>Total</p>
+                  <p>{Total} €</p>
+                </div>
+              </section>
+            ) : (
+              <section>
+                <input
+                  className="submit-before "
+                  type="submit"
+                  value="Valider mon panier"
+                />
+                <div className="basket">
+                  <div className="empty-cart">Votre panier est vide</div>
+                </div>
+              </section>
+            )}
           </aside>
         </div>
       </main>
