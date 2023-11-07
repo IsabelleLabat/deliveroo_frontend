@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 // import Categories from "./components/Categories";
+import LogoDeliveroo from "./assets/images/logo-teal.svg";
 
 import "./App.css";
 import axios from "axios";
@@ -8,39 +9,75 @@ function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async () => {
-    const response = await axios.get(
-      "https://site--deliveroobackend--7zwqb2nbgsj7.code.run/"
-    );
-    // console.log(response.data);
-    setData(response.data);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        "https://site--deliveroobackend--7zwqb2nbgsj7.code.run/"
+      );
+      // console.log(response.data);
+      setData(response.data);
+      setIsLoading(false);
+    };
     fetchData();
   }, []);
-  const meals = data.categories.meals.map((meal) => (
-    <div key={meal.id}>
-      <p>{meal.title}</p>
-      <p>{meal.description}</p>
-    </div>
-  ));
 
   return isLoading ? (
     <span>En cours de chargement...</span>
   ) : (
-    <>
-      <h1>{data.restaurant.name}</h1>
-      <p>{data.restaurant.description}</p>
-      <img src={data.restaurant.picture} alt="restaurant" />
+    <div>
+      <header>
+        <div className="topbar container">
+          <img src={LogoDeliveroo} alt="" />
+        </div>
+      </header>
+      <section className="hero">
+        <div className="inner-hero container">
+          <div>
+            <h1>{data.restaurant.name}</h1>
+            <p>{data.restaurant.description}</p>
+          </div>
 
-      {data.categories.map((item) => {
-        // console.log(item);
-        return <h2 key={item.name}>{item.name}</h2>;
-      })}
-      <div>{meals}</div>
-    </>
+          <img src={data.restaurant.picture} alt="restaurant" />
+        </div>
+      </section>
+      <main>
+        <div className="container inner-main">
+          <div className="categories">
+            {data.categories.map((item) => {
+              if (item.meals.length !== 0) {
+                // console.log(item);
+                return (
+                  <section key={item.name}>
+                    <h2>{item.name}</h2>
+                    <div className="meal-container">
+                      {item.meals.map((meal) => {
+                        return (
+                          <div className="plate" key={meal.name}>
+                            <div>
+                              <h3>{meal.title}</h3>
+                              <p className="description">{meal.description}</p>
+                              <div className="price-popular">
+                                <p>{meal.price} €</p>
+                                {meal.popular && <p>Populaire</p>}
+                              </div>
+                            </div>
+
+                            {meal.picture && <img src={meal.picture} alt="" />}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </div>
+          <aside className="panier"></aside>
+        </div>
+      </main>
+    </div>
   );
 }
 

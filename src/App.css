@@ -1,0 +1,119 @@
+/* général */
+
+:root {
+  font-family: "Stratos Deliveroo Web";
+  font-family: "IBM Plex Sans";
+  background-color: #f3f5f5;
+}
+
+header {
+  border-bottom: 1px solid #e9ebeb;
+
+  background-color: #ffffff;
+}
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+.topbar {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  align-items: center;
+  background-color: white;
+}
+
+.topbar img {
+  width: 150px;
+}
+
+/* Hero  */
+
+h1 {
+  font-size: 30px;
+  color: #2e3333;
+  margin-bottom: 40px;
+}
+.hero {
+  background-color: #ffffff;
+}
+.inner-hero {
+  display: flex;
+  gap: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.inner-hero p {
+  color: #868a8a;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.inner-hero img {
+  width: 350px;
+  border-radius: 5px;
+}
+
+/* Catégories meal */
+
+main {
+  display: flex;
+}
+main img {
+  width: 132px;
+  height: 132px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.inner-main {
+  display: flex;
+}
+
+.categories {
+  width: 65%;
+}
+
+aside {
+  width: 35%;
+}
+h2 {
+  font-size: 25px;
+  color: #2e3333;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.meal-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.plate {
+  display: flex;
+  width: 48%;
+  height: 166px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 15px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  justify-content: space-between;
+}
+
+.price-popular {
+  display: flex;
+}
+
+.price-popular p:first-child {
+  margin-right: 10px;
+}
+
+.description {
+  height: 30px;
+  overflow: hidden;
+  font-size: 14px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 17px;
+  margin-right: 10px;
+  color: #868a8a;
+}
