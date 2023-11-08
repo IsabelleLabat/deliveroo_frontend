@@ -8,16 +8,10 @@ import axios from "axios";
 function App() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [basket, setBasket] = useState([]);
-  const [quantity, setQuantity] = useState(1);
+  const [cart, setCart] = useState([]);
+
   const [AddedToCart, SetAddedToCart] = useState(false);
 
-  const handleIncrement = () => {
-    setQuantity((prevCount) => prevCount + 1);
-  };
-  const handleDecrement = () => {
-    setQuantity((prevCount) => prevCount - 1);
-  };
   let subTotal = 0;
   let delivery = 0;
   let Total = 0;
@@ -34,6 +28,32 @@ function App() {
 
     fetchData();
   }, []);
+
+  const handleAddToCart = (meal) => {
+    const cartCopy = [...cart];
+    let MealInCart = cartCopy.find((elem) => elem.id === meal.id);
+
+    if (MealInCart === undefined) {
+      const mealToPush = { ...meal, quantity: 1 };
+      cartCopy.push(mealToPush);
+    } else {
+      MealInCart.quantity++;
+    }
+    setCart(cartCopy);
+  };
+
+  const handleRemoveFromCart = (meal) => {
+    const cartCopy = [...cart];
+    const mealInCart = cartCopy.find((elem) => elem.id === meal.id);
+    if (mealInCart.quantity === 1) {
+      const index = cartCopy.indexOf(mealInCart);
+      cartCopy.splice(index, 1);
+    } else {
+      mealInCart.quantity--;
+    }
+
+    setCart(cartCopy);
+  };
 
   return isLoading ? (
     <span>En cours de chargement...</span>
@@ -71,10 +91,8 @@ function App() {
                             className="plate"
                             key={meal.id}
                             onClick={() => {
-                              const basketCopy = [...basket];
-                              basketCopy.push(meal);
-                              console.log(meal);
-                              setBasket(basketCopy);
+                              handleAddToCart(meal);
+                              // console.log(meal);
                               SetAddedToCart(true);
                             }}
                           >
@@ -110,32 +128,36 @@ function App() {
                   onClick={() => alert("Merci pour votre commande")}
                 />
                 <div className="cart">
-                  {basket.map((item) => {
-                    subTotal = subTotal + parseInt(item.price);
+                  {cart.map((meal) => {
+                    subTotal = subTotal + parseInt(meal.price * meal.quantity);
                     delivery = 2.5;
                     Total = subTotal + delivery;
 
                     return (
-                      <div key={item.title} className="items-basket">
+                      <div key={meal.title} className="items-cart">
                         <div className="quantity">
                           <button
                             className="quantitybutton"
-                            onClick={handleDecrement}
+                            onClick={() => {
+                              handleRemoveFromCart(meal);
+                            }}
                           >
                             -
                           </button>
 
-                          <div>{quantity}</div>
+                          <div>{meal.quantity}</div>
                           <button
                             className="quantitybutton"
-                            onClick={handleIncrement}
+                            onClick={() => {
+                              handleAddToCart(meal);
+                            }}
                           >
                             +
                           </button>
                         </div>
 
-                        <p>{item.title}</p>
-                        <p>{item.price} €</p>
+                        <p>{meal.title}</p>
+                        <p>{(meal.price * meal.quantity).toFixed(2)} €</p>
                       </div>
                     );
                   })}
@@ -162,7 +184,7 @@ function App() {
                   type="submit"
                   value="Valider mon panier"
                 />
-                <div className="basket">
+                <div>
                   <div className="empty-cart">Votre panier est vide</div>
                 </div>
               </section>
